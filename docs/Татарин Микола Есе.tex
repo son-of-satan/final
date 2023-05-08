@@ -1,0 +1,78 @@
+% Created 2023-05-08 Mon 14:04
+% Intended LaTeX compiler: xelatex
+\documentclass{scrartcl}
+\usepackage{fontspec}
+\usepackage[ukrainian]{babel}
+\usepackage{biblatex}
+\addbibresource{~/Org/.bib}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{unicode-math}
+\usepackage{capt-of}
+\usepackage{hyperref}
+% style: default
+% features: (font-main font-sans font-mono)
+\setmainfont{Alegreya}
+\setsansfont{Alegreya Sans}
+\setmonofont[Scale=MatchLowercase]{Iosevka}
+% end features
+\author{Татарин Микола, ІТ-92}
+\date{\today}
+\title{Есе по темі дипломної роботи для першої зустрічі з керівником}
+
+\providecolor{url}{HTML}{0077bb}
+\providecolor{link}{HTML}{882255}
+\providecolor{cite}{HTML}{999933}
+\hypersetup{
+  pdfauthor={Татарин Микола, ІТ-92},
+  pdftitle={Есе по темі дипломної роботи для першої зустрічі з керівником},
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 29.0.90 (Org mode 9.6.1)},
+  pdflang={Ukrainian},
+  breaklinks=true,
+  colorlinks=true,
+  linkcolor=link,
+  urlcolor=url,
+  citecolor=cite
+}
+\urlstyle{same}
+% hide links styles in toc
+\NewCommandCopy{\oldtoc}{\tableofcontents}
+\renewcommand{\tableofcontents}{\begingroup\hypersetup{hidelinks}\oldtoc\endgroup}
+\begin{document}
+
+\maketitle
+
+\section{Тема}
+\label{sec:orgc05631d}
+Застосунок для автоматичної категоризації художніх творів.
+
+\section{Проблема, що розглядається}
+\label{sec:orgd69c946}
+На сьогоднішний день у світі існує величезна кількість текстової інформації (книг, статей, блогів, і т.д.). Тому знайти те, що тобі потрібно, іноді досить важко. Те, наскільки легко чи важко можна знайти той чи інший шматок інформації, залежить від декількох факторів. Один із таких факторів - це метадані, як от: заголовок, опис, ключові слова. Останні особливо корисні, бо дозволяють користувачу пошукової системи звузити пошук до тої теми, яка йому потрібна. В ідеалі ключові слова повинен надати автор твору, але іноді цього не відбувається. Або ж автор це зробив, але метадані були якимось чином втрачені. Тоді для їх відновлення хтось повинен буде перечитати цей твір, і знову скласти список ключових слів. Деякі платформи (наприклад, goodreads) дозволяють читачам колективно редагувати теги, проте було б непогано, якби це можна було робити автоматично.
+
+\section{Мета проекту}
+\label{sec:org6bcef2a}
+Розробити застосунок для автоматичної категоризації текстів (я планую обмежитись художньою літературою), і співставлення цих текстів з набором ключових слів (наприклад: {}<<історія>>{}, {}<<драма>>{}). Використати для цього машинне навчання.
+
+\section{Що планується зробити}
+\label{sec:orgc6da442}
+\begin{enumerate}
+\item Розібрати вже існуючі моделі для вирішення цієї задачі і обрати оптимальну.
+\item Підібрати існуючий датасет категоризованих за тегами текстів, або ж створити свій, використовуючи літературу з публічного домену.
+\item Навчити на цьому датасеті обрану модель.
+\item Створити простий для використання інтерфейс, що дозволить використовувати цю модель в довільних застосунках.
+\item Створити веб або десктоп застосунок для автоматичної категоризації художніх творів.
+\end{enumerate}
+
+\section{Де це можна використати}
+\label{sec:org90f31e1}
+Це можна використати для автоматичної категоризації і каталогування творів у онлайн каталогах (наприклад, goodreads) та бібліотеках.
+\end{document}
