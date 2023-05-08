@@ -1,0 +1,91 @@
+#+title: Gather Genres
+
+#+property: header-args:python+ :tangle src/gather-genres.py :results output :session default
+#+auto_tangle: t
+
+#+begin_src python
+import pandas as pd
+
+df = pd.read_csv("/media/son-of-satan/hoard/gutenberg/pg_catalog.csv", low_memory=False)
+#+end_src
+
+#+RESULTS:
+
+#+begin_src python
+en_df = df[df["Language"].str.contains("en")]
+en_fiction_df = en_df[en_df["Subjects"].str.contains("fiction", case=False, na=False)]
+
+print(en_fiction_df.info())
+#+end_src
+
+#+RESULTS:
+#+begin_example
+<class 'pandas.core.frame.DataFrame'>
+Index: 21385 entries, 10 to 70470
+Data columns (total 9 columns):
+ #   Column       Non-Null Count  Dtype
+---  ------       --------------  -----
+ 0   Text#        21385 non-null  int64
+ 1   Type         21385 non-null  object
+ 2   Issued       21385 non-null  object
+ 3   Title        21385 non-null  object
+ 4   Language     21385 non-null  object
+ 5   Authors      21384 non-null  object
+ 6   Subjects     21385 non-null  object
+ 7   LoCC         21385 non-null  object
+ 8   Bookshelves  4075 non-null   object
+dtypes: int64(1), object(8)
+memory usage: 1.6+ MB
+None
+#+end_example
+
+#+begin_src python
+from bs4 import BeautifulSoup
+import requests
+import json
+
+root_url = "https://www.goodreads.com"
+
+def get_book_url(title, authors):
+    search_url = f"{root_url}/search?q={title}&search_type=books"
+
+    response = requests.get(search_url)
+    soup = BeautifulSoup(response.text)
+
+    return soup.find(class_="bookTitle")["href"]
+
+def get_book_genres(title, authors):
+    book_url = f"{root_url}/{get_book_url(title, authors)}"
+    response = requests.get(book_url)
+    soup = BeautifulSoup(response.text)
+
+    data = soup.find(id="__NEXT_DATA__")
+    apolloState = json.loads(data.contents[0])["props"]["pageProps"]["apolloState"]
+
+    genres = []
+    for key in apolloState:
+        if key.startswith("Book"):
+            for bookGenre in apolloState[key]["bookGenres"]:
+                genres.append(bookGenre["genre"]["name"])
+
+    return genres
+
+genres_list = []
+
+for index, row in en_fiction_df[110:300].iterrows():
+    text_id, title, authors = row["Text#"], row["Title"], row["Authors"]
+
+    genres = None
+    try:
+        genres = get_book_genres(title, authors)
+    except:
+        pass
+
+    genres_list.append({"Text#": text_id, "Title": title, "Genres": genres})
+
+genres_df = pd.DataFrame(genres_list)
+genres_df = genres_df.set_index("Text#")
+genres_df.to_csv("data/genres-110:300.csv")
+#+end_src
+
+#+RESULTS:
