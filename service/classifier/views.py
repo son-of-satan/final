@@ -1,12 +1,10 @@
-from copy import Error
-from re import template
-import tempfile
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View, generic
 from django.http import HttpRequest, HttpResponse
 
-from utilities.classifier import Classifier
-from utilities.document_converter import DocumentConverter
+from celery import current_app
+
+from utilities.tasks import classify_text, classify_document
 
 
 class IndexView(generic.TemplateView):
@@ -15,13 +13,12 @@ class IndexView(generic.TemplateView):
 
 class ClassifyTextView(View):
     template_name: str = "classifier/text-classifier-page.html"
-    classifier: Classifier = None
-
-    def __init__(self, classifier: Classifier, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.classifier: Classifier = classifier
 
     def get(self, request: HttpRequest, format=None):
+        id = request.GET.get("id", "")
+        res = classify_text.AsyncResult(id)
+        print(res.status)
+        print(classify_text.ignore_result)
         return HttpResponse(render(request, self.template_name))
 
     def post(self, request: HttpRequest, format=None):
@@ -31,38 +28,15 @@ class ClassifyTextView(View):
         return HttpResponse(render(request, self.template_name, context=context))
 
 
-class ClassifyFileView(View):
+class ClassifyDocumentView(View):
     template_name: str = "classifier/document-classifier-page.html"
-    classifier: Classifier = None
-    document_converter: DocumentConverter = None
-
-    def __init__(
-        self,
-        classifier: Classifier,
-        document_converter: DocumentConverter,
-        *args,
-        **kwargs
-    ):
-        super().__init__(*args, **kwargs)
-        self.classifier: Classifier = classifier
-        self.document_converter: DocumentConverter = document_converter
 
     def get(self, request: HttpRequest, format=None):
         return HttpResponse(render(request, self.template_name))
 
     def post(self, request: HttpRequest, format=None):
         file = request.FILES["document"]
-        temp = tempfile.NamedTemporaryFile()
-        for chunk in file.chunks():
-            temp.write(chunk)
-        temp.flush()
 
-        try:
-            text = self.document_converter.convert(temp.name)
-        except:
-            context = {}
-            return HttpResponse(render(request, self.template_name, context=context))
-
-        genres = self.classifier.classify(text)
+        genres = classify_document(file)
         context = {"genres": genres, "document": file}
         return HttpResponse(render(request, self.template_name, context=context))

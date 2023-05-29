@@ -62,8 +62,3 @@ class Classifier:
         x = [torch.flatten(row.nonzero()).tolist() for row in x]
         x = [self.vocab.lookup_tokens(row) for row in x]
         return x
-
-
-classifier = Classifier(
-    "./data/model-castrated.pth", None, "./data/vocab-castrated.pth"
-)
