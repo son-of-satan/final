@@ -46,8 +46,7 @@ class Classifier:
             probabilities = self.model(**inputs)
 
         print(probabilities)
-        labels = self._decode_labels((probabilities > 0.5).to(int))
-        print(labels)
+        labels = self._decode_labels((probabilities > 0.4).to(int))
 
         return labels
 
