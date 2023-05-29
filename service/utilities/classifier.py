@@ -25,14 +25,7 @@ class Classifier:
         self.tokenizer = AutoTokenizer.from_pretrained("allenai/longformer-base-4096")
         self.model = Model(len(self.vocab))
 
-        state_dict = torch.load(model_path)
-        remove_prefix = "module."
-        state_dict = {
-            k[len(remove_prefix) :] if k.startswith(remove_prefix) else k: v
-            for k, v in state_dict.items()
-        }
-
-        self.model.load_state_dict(state_dict)
+        self.model.load_state_dict(torch.load(model_path))
         self.model.eval()
 
         if device:
