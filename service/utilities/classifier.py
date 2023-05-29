@@ -1,0 +1,69 @@
+import torch
+import torchtext
+from transformers import AutoTokenizer, AutoModel
+
+
+class Model(torch.nn.Module):
+    def __init__(self, num_labels):
+        super().__init__()
+        self.transformer = AutoModel.from_pretrained("allenai/longformer-base-4096")
+        self.output = torch.nn.Linear(in_features=768, out_features=num_labels)
+        self.sigmoid = torch.nn.Sigmoid()
+
+    def forward(self, input_ids=None, attention_mask=None):
+        x = self.transformer(input_ids=input_ids, attention_mask=attention_mask)[
+            "pooler_output"
+        ]  # "pooler_output", "last_hidden_state"
+        x = self.output(x)
+        x = self.sigmoid(x)
+        return x
+
+
+class Classifier:
+    def __init__(self, model_path, tokenizer_path, vocab_path, device=None):
+        self.vocab = torch.load(vocab_path)
+        self.tokenizer = AutoTokenizer.from_pretrained("allenai/longformer-base-4096")
+        self.model = Model(len(self.vocab))
+
+        state_dict = torch.load(model_path)
+        remove_prefix = "module."
+        state_dict = {
+            k[len(remove_prefix) :] if k.startswith(remove_prefix) else k: v
+            for k, v in state_dict.items()
+        }
+
+        self.model.load_state_dict(state_dict)
+        self.model.eval()
+
+        if device:
+            pass
+        elif torch.cuda.is_available():
+            device = "cuda"
+        else:
+            device = "cpu"
+
+        self.device = torch.device(device)
+
+    def classify(self, texts):
+        inputs = self.tokenizer(
+            texts, padding="max_length", truncation=True, return_tensors="pt"
+        )
+
+        with torch.no_grad():
+            probabilities = self.model(**inputs)
+
+        print(probabilities)
+        labels = self._decode_labels((probabilities > 0.5).to(int))
+        print(labels)
+
+        return labels
+
+    def _decode_labels(self, x):
+        x = [torch.flatten(row.nonzero()).tolist() for row in x]
+        x = [self.vocab.lookup_tokens(row) for row in x]
+        return x
+
+
+classifier = Classifier(
+    "./data/model-castrated.pth", None, "./data/vocab-castrated.pth"
+)

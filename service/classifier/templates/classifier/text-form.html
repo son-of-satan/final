@@ -1,0 +1,10 @@
+<form method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="text">Enter text for classification:</label><br>
+    <textarea class="w-100" type="text" name="text">{{ text }}</textarea><br>
+  </div>
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Classify</button>
+  </div>
+</form>

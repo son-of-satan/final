@@ -1,0 +1,10 @@
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="document">Upload document for classification:</label><br>
+    <input type="file" name="document"></input><br>
+  </div>
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Classify</button>
+  </div>
+</form>
