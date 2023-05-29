@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8"/>
+<title>Передзахист</title>
+<meta name="author" content="Татарин Микола, ІТ-92"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/dist/reveal.css"/>
+
+<link rel="stylesheet" href="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/dist/theme/night.css" id="theme"/>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1 class="title">Передзахист</h1><h2 class="author">Татарин Микола, ІТ-92</h2><p class="date">Created: 2023-05-29 Mon 11:13</p>
+</section>
+<section id="table-of-contents-section">
+<div id="table-of-contents" role="doc-toc">
+<h2>&#1047;&#1084;&#1110;&#1089;&#1090;</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#/slide-1">1. Тема</a></li>
+<li><a href="#/slide-2">2. Мета</a></li>
+<li><a href="#/slide-3">3. Постановка задач</a></li>
+<li><a href="#/slide-4">4. Варіанти використання</a></li>
+<li><a href="#/slide-5">5. Порівняння з аналогами</a></li>
+<li><a href="#/slide-6">6. Використані технології</a></li>
+<li><a href="#/slide-7">7. Про ПЗ</a>
+<ul>
+<li><a href="#/slide-7-1">7.1. Про дані</a></li>
+<li><a href="#/slide-7-2">7.2. Архітектура класифікатору</a></li>
+<li><a href="#/slide-7-3">7.3. Архітектура веб сервісу</a></li>
+</ul>
+</li>
+<li><a href="#/slide-8">8. Демонстрація ПЗ</a></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<section id="slide-1">
+<h2 id="1"><span class="section-number-2">1.</span> Тема</h2>
+<p>
+Веб-застосунок для автоматичної категоризації художніх творів
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-2">
+<h2 id="2"><span class="section-number-2">2.</span> Мета</h2>
+<p>
+Пришвидшити процес пошуку творів художньої літератури шляхом автоматичної їх категоризації.
+</p>
+
+<p>
+Автоматизувати процес категоризації творів художньої літератури, що може полегшити їх пошук.
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-3">
+<h2 id="3"><span class="section-number-2">3.</span> Постановка задач</h2>
+<ol>
+<li>Розробити класифікатор тексту (художніх творів) за жанрами.</li>
+<li>Розробити веб сервіс, що дозволить користуватись класифікатором.</li>
+
+</ol>
+
+</section>
+</section>
+<section>
+<section id="slide-4">
+<h2 id="4"><span class="section-number-2">4.</span> Варіанти використання</h2>
+<p>
+Сервіс можна використати для:
+</p>
+<ol>
+<li>Класифікації звичайного тексту у ручному режимі.</li>
+<li>Класифікації документів (файлів) у ручному режимі.</li>
+<li>Класифікації звичайного тексту у автоматичному режимі за допомогою API.</li>
+<li>Класифікації документів (файлів) у автоматичному режимі за допомогою API.</li>
+
+</ol>
+
+</section>
+</section>
+<section>
+<section id="slide-5">
+<h2 id="5"><span class="section-number-2">5.</span> Порівняння з аналогами</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">Програмний продукт</td>
+<td class="org-left">Тип продукту</td>
+<td class="org-left">Наявність API</td>
+<td class="org-left">Якість тегів</td>
+<td class="org-left">Наявність тегів для довільного тексту</td>
+<td class="org-left">Можливість навчання своїх моделей</td>
+<td class="org-left">Наявність підходящого класифікатора</td>
+</tr>
+
+<tr>
+<td class="org-left">Дипломна робота</td>
+<td class="org-left">сервіс класифікації</td>
+<td class="org-left">✓</td>
+<td class="org-left">?</td>
+<td class="org-left">✓</td>
+<td class="org-left">✗</td>
+<td class="org-left">✓</td>
+</tr>
+
+<tr>
+<td class="org-left">Goodreads</td>
+<td class="org-left">онлайн каталог</td>
+<td class="org-left">✗</td>
+<td class="org-left">✓</td>
+<td class="org-left">✗</td>
+<td class="org-left">n/a</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">LibraryThing</td>
+<td class="org-left">онлайн каталог</td>
+<td class="org-left">✓</td>
+<td class="org-left">✗</td>
+<td class="org-left">✗</td>
+<td class="org-left">n/a</td>
+<td class="org-left">n/a</td>
+</tr>
+
+<tr>
+<td class="org-left">MonkeyLearn</td>
+<td class="org-left">nlp-сервіс</td>
+<td class="org-left">✓</td>
+<td class="org-left">n/a</td>
+<td class="org-left">✓</td>
+<td class="org-left">✓</td>
+<td class="org-left">✗</td>
+</tr>
+
+<tr>
+<td class="org-left">uClassify</td>
+<td class="org-left">сервіс класифікації</td>
+<td class="org-left">✓</td>
+<td class="org-left">n/a</td>
+<td class="org-left">✓</td>
+<td class="org-left">✓</td>
+<td class="org-left">✗</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-6">
+<h2 id="6"><span class="section-number-2">6.</span> Використані технології</h2>
+<ol>
+<li>Класифікатор: Pytorch, Huggingface Transformers</li>
+<li>Веб сервіс: Django, Django REST Framework</li>
+<li>Черга задач: Celery + Redis</li>
+<li>Конвертація документів: Pandoc, PDFMiner</li>
+
+</ol>
+
+</section>
+</section>
+<section>
+<section id="slide-7">
+<h2 id="7"><span class="section-number-2">7.</span> Про ПЗ</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+</section>
+<section id="slide-7-1">
+<h3 id="7-1"><span class="section-number-3">7.1.</span> Про дані</h3>
+<p>
+Дані для навчання класифікатору було взято з наступних джерел:
+</p>
+<ol>
+<li>Project Gutenberg &#x2013; звідси було запозичено близько 5000 творів з публічного домену сумарною довжиною 342 млн слів.</li>
+<li>Goodreads &#x2013; звідси було запозичено жанри (650 -&gt; 90 унікальних жанрів).</li>
+
+</ol>
+
+
+<div id="orge88bddc" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/87/f2b9ff-b265-4015-9eff-e00c24862971/_20230529_111314Untitled.png" alt="_20230529_111314Untitled.png" />
+</p>
+</div>
+
+
+
+</section>
+<section id="slide-7-2">
+<h3 id="7-2"><span class="section-number-3">7.2.</span> Архітектура класифікатору</h3>
+
+<div id="org5c8ff6d" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/a8/f62286-5a68-403d-9a67-c20f44cffe33/_20230526_164143classifier.png" alt="_20230526_164143classifier.png" width="25%" />
+</p>
+</div>
+
+
+</section>
+<section id="slide-7-3">
+<h3 id="7-3"><span class="section-number-3">7.3.</span> Архітектура веб сервісу</h3>
+
+<div id="orga4b0d8a" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/08/40ffc7-fae2-465e-96db-018a665a29ef/_20230526_164138service.png" alt="_20230526_164138service.png" width="50%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-8">
+<h2 id="8"><span class="section-number-2">8.</span> Демонстрація ПЗ</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/dist/reveal.js"></script>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/plugin/markdown/markdown.js"></script>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/plugin/notes/notes.js"></script>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/plugin/math/math.js"></script>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/plugin/search/search.js"></script>
+<script src="/home/son-of-satan/.config/emacs/.local/straight/build-29.0.90/revealjs/plugin/zoom/zoom.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+width: 2560,
+height: 1440,
+
+transition: 'slide',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealNotes, RevealMath, RevealSearch, RevealZoom ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>
