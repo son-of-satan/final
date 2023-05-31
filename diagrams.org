@@ -1,0 +1,139 @@
+#+title: Diagrams
+
+#+begin_src plantuml :file figures/usecase.png
+package "Classification service" {
+  package API {
+    usecase (Classify text) as (UC1)
+    usecase (Classify document) as (UC2)
+  }
+
+  package "Web GUI" {
+    usecase (Classify text) as (UC3)
+    usecase (Classify document) as (UC4)
+  }
+}
+
+
+:Guest: --> (UC1)
+:Guest: --> (UC2)
+:Guest: --> (UC3)
+:Guest: --> (UC4)
+#+end_src
+
+#+RESULTS:
+[[file:figures/usecase.png]]
+
+#+begin_src plantuml :file figures/classes.png
+skinparam linetype ortho
+
+namespace django {
+  namespace django-rest-framework {
+    class APIView {
+      --
+      ...
+    }
+  }
+
+  class View {
+    --
+    ...
+  }
+}
+
+namespace views {
+  class TextClassifierView {
+    +get()
+    +post()
+  }
+
+  class FileClassifierView {
+    +get()
+    +post()
+  }
+
+  class TextClassifierAPIView {
+    +post()
+  }
+
+  class FileClassifierAPIView {
+    +post()
+  }
+}
+
+namespace utilities {
+  class Classifier {
+    +load()
+    +classify()
+  }
+
+  class DocumentConverter {
+    +convert()
+  }
+}
+
+namespace pandoc {}
+namespace tensorflow {}
+
+utilities -r[hidden]- views
+views -r[hidden]- django
+
+View -u[hidden]- APIView
+
+TextClassifierView -r-|> View
+FileClassifierView -r-|> View
+TextClassifierAPIView -r-|> APIView
+FileClassifierAPIView -r-|> APIView
+
+TextClassifierAPIView -l-* Classifier
+FileClassifierAPIView -l-* Classifier
+TextClassifierView -l-* Classifier
+FileClassifierView -l-* Classifier
+
+TextClassifierAPIView -d[hidden]- FileClassifierAPIView
+FileClassifierAPIView -d[hidden]- TextClassifierView
+TextClassifierView -d[hidden]- FileClassifierView
+
+FileClassifierView -l-* DocumentConverter
+FileClassifierAPIView -l-* DocumentConverter
+
+Classifier -d- DocumentConverter
+
+Classifier -l-* tensorflow
+DocumentConverter -l-* pandoc
+#+end_src
+
+#+RESULTS:
+ [[file:figures/classes.png]]
+
+#+begin_src dot :file figures/architecture.png
+graph {
+    splines=false;
+    subgraph cluster_model {
+        label=Model
+        bgcolor=Grey
+        Classifier, DocumentConverter
+    }
+    subgraph cluster_view {
+        label=View
+        bgcolor=Grey
+        IndexView
+        TextClassifierView, FileClassifierView
+        TextClassifierAPIView, FileClassifierAPIView
+    }
+    subgraph cluster_template {
+        label=Template
+        bgcolor=Grey
+        IndexTemplate
+        TextClassifierTemplate, FileClassifierTemplate
+    }
+
+    IndexView -- IndexTemplate
+    TextClassifierView -- {Classifier, TextClassifierTemplate}
+    FileClassifierView -- {Classifier, DocumentConverter, FileClassifierTemplate}
+    TextClassifierAPIView -- {Classifier}
+    FileClassifierAPIView -- {Classifier, DocumentConverter}
+}
+#+end_src
+
+#+RESULTS:
+[[file:figures/architecture.png]]
