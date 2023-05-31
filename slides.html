@@ -2,8 +2,8 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8"/>
-<title>Передзахист</title>
-<meta name="author" content="Татарин Микола, ІТ-92"/>
+<title>Веб застосунок для автоматичної категоризації художніх творів</title>
+<meta name="author" content="Виконав: Татарин М.С. Керівник: Ковтунець О.В."/>
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
@@ -15,7 +15,7 @@
 <div class="reveal">
 <div class="slides">
 <section id="sec-title-slide">
-<h1 class="title">Передзахист</h1><h2 class="author">Татарин Микола, ІТ-92</h2><p class="date">Created: 2023-05-29 Mon 11:13</p>
+<h1 class="title">Веб застосунок для автоматичної категоризації художніх творів</h1><h2 class="author">Виконав: Татарин М.С. Керівник: Ковтунець О.В.</h2>
 </section>
 <section id="table-of-contents-section">
 <div id="table-of-contents" role="doc-toc">
@@ -31,8 +31,9 @@
 <li><a href="#/slide-7">7. Про ПЗ</a>
 <ul>
 <li><a href="#/slide-7-1">7.1. Про дані</a></li>
-<li><a href="#/slide-7-2">7.2. Архітектура класифікатору</a></li>
-<li><a href="#/slide-7-3">7.3. Архітектура веб сервісу</a></li>
+<li><a href="#/slide-7-2">7.2. Архітектура класифікатора</a></li>
+<li><a href="#/slide-7-3">7.3. Коректність класифікатора</a></li>
+<li><a href="#/slide-7-4">7.4. Архітектура веб застосунку</a></li>
 </ul>
 </li>
 <li><a href="#/slide-8">8. Демонстрація ПЗ</a></li>
@@ -54,11 +55,7 @@
 <section id="slide-2">
 <h2 id="2"><span class="section-number-2">2.</span> Мета</h2>
 <p>
-Пришвидшити процес пошуку творів художньої літератури шляхом автоматичної їх категоризації.
-</p>
-
-<p>
-Автоматизувати процес категоризації творів художньої літератури, що може полегшити їх пошук.
+Автоматизувати процес класифікації художніх творів.
 </p>
 
 </section>
@@ -67,8 +64,11 @@
 <section id="slide-3">
 <h2 id="3"><span class="section-number-2">3.</span> Постановка задач</h2>
 <ol>
-<li>Розробити класифікатор тексту (художніх творів) за жанрами.</li>
-<li>Розробити веб сервіс, що дозволить користуватись класифікатором.</li>
+<li>Реєстрація та авторизація користувачів</li>
+<li>Класифікація тексту</li>
+<li>Класифікація документів</li>
+<li>Зберігання/редагування/видалення результатів класифікації (кожен користувач має список результатів)</li>
+<li>Постановка запитів у чергу при пікових навантаженнях</li>
 
 </ol>
 
@@ -77,16 +77,12 @@
 <section>
 <section id="slide-4">
 <h2 id="4"><span class="section-number-2">4.</span> Варіанти використання</h2>
-<p>
-Сервіс можна використати для:
-</p>
-<ol>
-<li>Класифікації звичайного тексту у ручному режимі.</li>
-<li>Класифікації документів (файлів) у ручному режимі.</li>
-<li>Класифікації звичайного тексту у автоматичному режимі за допомогою API.</li>
-<li>Класифікації документів (файлів) у автоматичному режимі за допомогою API.</li>
 
-</ol>
+<div id="orga7f9d1e" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/3d/609c12-5fa9-4401-ba87-07f230da3a31/_20230530_154716Untitled Diagram.drawio.png" alt="_20230530_154716Untitled Diagram.drawio.png" width="50%" />
+</p>
+</div>
+
 
 </section>
 </section>
@@ -108,14 +104,11 @@
 <col  class="org-left" />
 
 <col  class="org-left" />
-
-<col  class="org-left" />
 </colgroup>
 <tbody>
 <tr>
 <td class="org-left">Програмний продукт</td>
 <td class="org-left">Тип продукту</td>
-<td class="org-left">Наявність API</td>
 <td class="org-left">Якість тегів</td>
 <td class="org-left">Наявність тегів для довільного тексту</td>
 <td class="org-left">Можливість навчання своїх моделей</td>
@@ -123,9 +116,8 @@
 </tr>
 
 <tr>
-<td class="org-left">Дипломна робота</td>
-<td class="org-left">сервіс класифікації</td>
-<td class="org-left">✓</td>
+<td class="org-left">Дипломний проєкт</td>
+<td class="org-left">застосунок класифікації</td>
 <td class="org-left">?</td>
 <td class="org-left">✓</td>
 <td class="org-left">✗</td>
@@ -135,7 +127,6 @@
 <tr>
 <td class="org-left">Goodreads</td>
 <td class="org-left">онлайн каталог</td>
-<td class="org-left">✗</td>
 <td class="org-left">✓</td>
 <td class="org-left">✗</td>
 <td class="org-left">n/a</td>
@@ -145,7 +136,6 @@
 <tr>
 <td class="org-left">LibraryThing</td>
 <td class="org-left">онлайн каталог</td>
-<td class="org-left">✓</td>
 <td class="org-left">✗</td>
 <td class="org-left">✗</td>
 <td class="org-left">n/a</td>
@@ -155,7 +145,6 @@
 <tr>
 <td class="org-left">MonkeyLearn</td>
 <td class="org-left">nlp-сервіс</td>
-<td class="org-left">✓</td>
 <td class="org-left">n/a</td>
 <td class="org-left">✓</td>
 <td class="org-left">✓</td>
@@ -165,7 +154,6 @@
 <tr>
 <td class="org-left">uClassify</td>
 <td class="org-left">сервіс класифікації</td>
-<td class="org-left">✓</td>
 <td class="org-left">n/a</td>
 <td class="org-left">✓</td>
 <td class="org-left">✓</td>
@@ -181,7 +169,7 @@
 <h2 id="6"><span class="section-number-2">6.</span> Використані технології</h2>
 <ol>
 <li>Класифікатор: Pytorch, Huggingface Transformers</li>
-<li>Веб сервіс: Django, Django REST Framework</li>
+<li>Веб застосунок: Django, Django REST Framework</li>
 <li>Черга задач: Celery + Redis</li>
 <li>Конвертація документів: Pandoc, PDFMiner</li>
 
@@ -198,7 +186,7 @@
 <section id="slide-7-1">
 <h3 id="7-1"><span class="section-number-3">7.1.</span> Про дані</h3>
 <p>
-Дані для навчання класифікатору було взято з наступних джерел:
+Дані для навчання класифікатора було взято з наступних джерел:
 </p>
 <ol>
 <li>Project Gutenberg &#x2013; звідси було запозичено близько 5000 творів з публічного домену сумарною довжиною 342 млн слів.</li>
@@ -207,31 +195,67 @@
 </ol>
 
 
-<div id="orge88bddc" class="figure">
+<div id="org9d85b1a" class="figure">
 <p><img src="file:///home/son-of-satan/org/.attach/87/f2b9ff-b265-4015-9eff-e00c24862971/_20230529_111314Untitled.png" alt="_20230529_111314Untitled.png" />
 </p>
 </div>
 
-
-
 </section>
 <section id="slide-7-2">
-<h3 id="7-2"><span class="section-number-3">7.2.</span> Архітектура класифікатору</h3>
+<h3 id="7-2"><span class="section-number-3">7.2.</span> Архітектура класифікатора</h3>
 
-<div id="org5c8ff6d" class="figure">
-<p><img src="file:///home/son-of-satan/org/.attach/a8/f62286-5a68-403d-9a67-c20f44cffe33/_20230526_164143classifier.png" alt="_20230526_164143classifier.png" width="25%" />
+<div id="orgd5d9747" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/a8/f62286-5a68-403d-9a67-c20f44cffe33/_20230526_164143classifier.png" alt="_20230526_164143classifier.png" width="50%" />
 </p>
 </div>
-
 
 </section>
 <section id="slide-7-3">
-<h3 id="7-3"><span class="section-number-3">7.3.</span> Архітектура веб сервісу</h3>
+<h3 id="7-3"><span class="section-number-3">7.3.</span> Коректність класифікатора</h3>
+<p>
+Коректність роботи класифікатора перевірялася на тестовому датасеті творів, які класифікатор не бачив на етапі навчання, і оцінювався за допомогою метрик AUROC і AURPC, які вимірюють сумарну продуктивність класифікатора.
+</p>
 
-<div id="orga4b0d8a" class="figure">
-<p><img src="file:///home/son-of-satan/org/.attach/08/40ffc7-fae2-465e-96db-018a665a29ef/_20230526_164138service.png" alt="_20230526_164138service.png" width="50%" />
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-right">Classifier</td>
+<td class="org-right">Baseline</td>
+</tr>
+
+<tr>
+<td class="org-left">Macro AUROC:</td>
+<td class="org-right">0.9251319169998169</td>
+<td class="org-right">0.5</td>
+</tr>
+
+<tr>
+<td class="org-left">Macro AURPC:</td>
+<td class="org-right">0.6105175614356995</td>
+<td class="org-right">0.0509</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-7-4">
+<h3 id="7-4"><span class="section-number-3">7.4.</span> Архітектура веб застосунку</h3>
+
+<div id="org02c44cb" class="figure">
+<p><img src="file:///home/son-of-satan/org/.attach/08/40ffc7-fae2-465e-96db-018a665a29ef/_20230530_164657arch.drawio.png" alt="_20230530_164657arch.drawio.png" width="90%" />
 </p>
 </div>
+
 
 </section>
 </section>
