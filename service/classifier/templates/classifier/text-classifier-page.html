@@ -2,8 +2,15 @@
 
 {% block title %}Text Classifier{% endblock %}
 
+{% block head %}
+{% if in_progress %}
+<meta http-equiv="refresh" content="5" />
+{% endif %}
+{% endblock %}
+
 {% block content %}
   <h1>Text Classifier</h1>
   {% include "./text-form.html" %}
   {% include "./genres-display.html" %}
+  {% include "./loading-indicator-display.html" %}
 {% endblock %}

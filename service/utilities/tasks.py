@@ -1,4 +1,5 @@
 import tempfile
+import base64
 
 from celery import shared_task
 
@@ -16,13 +17,11 @@ def classify_text(text):
 
 
 @shared_task()
-def classify_document(file):
+def classify_document(contents):
     temp = tempfile.NamedTemporaryFile()
-    for chunk in file.chunks():
-        temp.write(chunk)
+    temp.write(base64.b64decode(contents))
     temp.flush()
 
     text = document_converter.convert(temp.name)
     genres = classifier.classify(text)
-
     return genres
