@@ -3,7 +3,7 @@
 
 #+language: uk
 #+options: toc:nil
-#+export_file_name: docs/Татарин Микола Есе.pdf
+#+export_file_name: Татарин Микола Есе.pdf
 
 * Тема
 Застосунок для автоматичної категоризації художніх творів.
