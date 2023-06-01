@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework import authentication, permissions
 from django.contrib.auth.models import User
 
-from utilities.tasks import classify_text, classify_document
+from common.tasks import classify_text, classify_document
 
 
 class ClassifyTextAPIView(APIView):

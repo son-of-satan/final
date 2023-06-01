@@ -1,6 +1,6 @@
 {% extends "./base-page.html" %}
 
-{% block title %}Document Classifier{% endblock %}
+{% block title %} Classify Document {% endblock %}
 
 {% block head %}
 {% if in_progress %}
@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block content %}
-  <h1>Document Classifier</h1>
-  {% include "./document-form.html" %}
+  <h1>Classify Document</h1>
+  {% include "./classify-document-form.html" %}
   {% include "./genres-display.html" %}
   {% include "./loading-indicator-display.html" %}
 {% endblock %}
