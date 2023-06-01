@@ -32,8 +32,8 @@ CELERY_BROKER_URL = "redis://localhost:6379"
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "django-cache"
 
+CELERY_TASK_TRACK_STARTED = True
 CELERY_RESULT_EXTENDED = True
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "django_celery_results",
+    "django_bootstrap5",
     "common",
     "classifier",
     "classifier_api",

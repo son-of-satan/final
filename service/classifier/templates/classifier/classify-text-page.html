@@ -1,0 +1,16 @@
+{% extends "./base-page.html" %}
+
+{% load django_bootstrap5 %}
+
+{% block title %} Classify Text {% endblock %}
+
+{% block content %}
+<form method="post", class="form">
+  {% csrf_token %}
+
+  {% bootstrap_form form %}
+
+  {% bootstrap_button button_type="submit" content="Submit" %}
+  {% bootstrap_button button_type="reset" content="Reset" %}
+</form>
+{% endblock %}

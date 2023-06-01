@@ -7,4 +7,5 @@ class ClassifyTextForm(forms.Form):
 
 
 class ClassifyDocumentForm(forms.Form):
-    pass
+    name = forms.CharField(required=False)
+    document = forms.FileField(required=True)
