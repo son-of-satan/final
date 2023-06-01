@@ -1,12 +1,14 @@
 import torch
 import torchtext
-from transformers import AutoTokenizer, AutoModel
+from transformers import LongformerTokenizer, LongformerConfig, LongformerModel
 
 
 class Model(torch.nn.Module):
     def __init__(self, num_labels):
         super().__init__()
-        self.transformer = AutoModel.from_pretrained("allenai/longformer-base-4096")
+        self.transformer = LongformerModel(
+            LongformerConfig.from_pretrained("allenai/longformer-base-4096")
+        )
         self.output = torch.nn.Linear(in_features=768, out_features=num_labels)
         self.sigmoid = torch.nn.Sigmoid()
 
@@ -22,7 +24,9 @@ class Model(torch.nn.Module):
 class Classifier:
     def __init__(self, model_path, tokenizer_path, vocab_path, device=None):
         self.vocab = torch.load(vocab_path)
-        self.tokenizer = AutoTokenizer.from_pretrained("allenai/longformer-base-4096")
+        self.tokenizer = LongformerTokenizer.from_pretrained(
+            "allenai/longformer-base-4096"
+        )
         self.model = Model(len(self.vocab))
 
         self.model.load_state_dict(torch.load(model_path))
