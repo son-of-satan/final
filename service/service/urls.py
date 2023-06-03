@@ -17,8 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from classifier.views import RegenerateTokenView
+
 
 urlpatterns = [
+    path("accounts/", include("django_registration.backends.one_step.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path(
+        "accounts/regenerate-token",
+        RegenerateTokenView.as_view(),
+        name="regenerate-token",
+    ),
     path("admin/", admin.site.urls),
     path("", include("classifier.urls")),
     path("api/", include("classifier_api.urls")),

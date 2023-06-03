@@ -1,11 +1,8 @@
 {% extends "common/base-page.html" %}
 
+{% block title %}Index{% endblock %}
+
 {% block content %}
-<div id="title">
-  <h1>Fiction Classifier</h1>
-</div>
-<div id="links">
-  <a href="{% url 'classifier:text' %}" class="btn btn-primary" role="button">Classify text</a>
-  <a href="{% url 'classifier:document' %}" class="btn btn-primary" role="button">Classify document</a>
-</div>
+<a href="{% url 'classifier:text' %}" class="btn btn-primary" role="button">Classify text</a>
+<a href="{% url 'classifier:document' %}" class="btn btn-primary" role="button">Classify document</a>
 {% endblock %}

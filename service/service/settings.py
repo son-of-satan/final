@@ -34,6 +34,14 @@ CELERY_CACHE_BACKEND = "django-cache"
 
 CELERY_TASK_TRACK_STARTED = True
 CELERY_RESULT_EXTENDED = True
+
+# REST Framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication"
+    ]
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,7 +52,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "rest_framework.authtoken",
     "django_celery_results",
+    "django_registration",
     "django_bootstrap5",
     "common",
     "classifier",
@@ -66,7 +76,7 @@ ROOT_URLCONF = "service.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [Path(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -145,3 +155,5 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGIN_REDIRECT_URL = "/tasks"
